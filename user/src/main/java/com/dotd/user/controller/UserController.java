@@ -25,6 +25,14 @@ public class UserController {
         return ResponseEntity.ok(result);
     }
 
+
+    // 더미 회원들 등록
+    @PostMapping("regist-dummy")
+    public ResponseEntity<?> registDummy( ) {
+        userService.registDummy();
+        return ResponseEntity.ok("ok");
+    }
+
     // 회원 한 명 조회
     @GetMapping("find")
     public ResponseEntity<?> findUser(@RequestHeader("id") String id) {

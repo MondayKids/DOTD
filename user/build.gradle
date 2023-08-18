@@ -33,6 +33,11 @@ dependencies {
 	// aop
 	implementation 'org.springframework.boot:spring-boot-starter-aop'
 
+	// batch
+	implementation 'org.springframework.boot:spring-boot-starter-batch'
+
+
+
 
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	compileOnly 'org.projectlombok:lombok'

@@ -49,6 +49,25 @@ public class UserServiceImpl implements UserService {
         return result;
     }
 
+    // 더미 회원들 등록
+    @Override
+    public void registDummy() {
+
+        for(int i = 11; i < 1001; i++) {
+            User dummyUser = User.builder()
+                    .loginId("dummyid" + i)
+                    .password("password" + i)
+                    .lastName("kim" + i)
+                    .firstName("dong" + i)
+                    .nickname("nick" + i)
+                    .address("address" + i)
+                    .phoneNumber("phone" + i)
+                    .email("email" + i)
+                    .build();
+            userRepository.save(dummyUser);
+        }
+    }
+
 
     // 회원 조회
     @Override
@@ -57,32 +76,8 @@ public class UserServiceImpl implements UserService {
         UserResponseDto result = userMapper.userToUserResponseDto(user);
         return result;
     }
+
+
 }
 
 
-//        User user = User.builder()
-//                .loginId(dto.getLoginId())
-//                .password(dto.getPassword())
-//                .lastName(dto.getLastName())
-//                .firstName(dto.getFirstName())
-//                .nickname(dto.getNickname())
-//                .address(dto.getAddress())
-//                .phoneNumber(dto.getPhoneNumber())
-//                .email(dto.getEmail())
-//                .build();
-
-//        UserResponseDto result = UserResponseDto.builder()
-//                .id(save.getId())
-//                .loginId(save.getLoginId())
-//                .password(save.getPassword())
-//                .lastName(save.getLastName())
-//                .firstName(save.getFirstName())
-//                .nickname(save.getNickname())
-//                .address(save.getAddress())
-//                .phoneNumber(save.getPhoneNumber())
-//                .email(save.getEmail())
-//                .reward(save.getReward())
-//                .usedMoney(save.getUsedMoney())
-//                .tier(save.getTier())
-//                .createdAt(save.getCreatedAt())
-//                .build();
