@@ -22,7 +22,23 @@ public class BatchController {
 
     private final JobLauncher jobLauncher;
     private final Job simpleJob;
-    private final Job userJob;
+    private final Job userJobV1;
+    private final Job userTierJobV2;
+
+    // user 등급 업데이트 메소드
+    @PostMapping("/set-tier-v2")
+    public ResponseEntity<String> setTierVersionTwo() {
+        try {
+            JobParameters jobParameters = new JobParametersBuilder()
+                    .addLong("time", System.currentTimeMillis())
+                    .toJobParameters();
+            jobLauncher.run(userTierJobV2, jobParameters);
+            return ResponseEntity.ok("Batch job has been started.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Failed to start the batch job.");
+        }
+    }
 
 
     // user 등급 업데이트 메소드
@@ -40,7 +56,7 @@ public class BatchController {
             JobParameters jobParameters = new JobParametersBuilder()
                     .addLong("time", System.currentTimeMillis())
                     .toJobParameters();
-            jobLauncher.run(userJob, jobParameters);
+            jobLauncher.run(userJobV1, jobParameters);
             return ResponseEntity.ok("Batch job has been started.");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

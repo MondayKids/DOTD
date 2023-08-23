@@ -1,6 +1,7 @@
 package com.dotd.user.handler;
 
 
+import com.dotd.user.exception.FieldDataException;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -23,12 +24,8 @@ import java.util.Map;
 @Slf4j
 public class GlobalExceptionHandler {
 
-
-    // 원본
-    // value의 커스텀한 에러를 넣는다.
-    @ExceptionHandler(value = {Exception.class})
-    public ResponseEntity<Object> handleOtherExceptions(Exception ex, WebRequest request) {
-
+    // 에러 위치 표시 로그
+    public void errorSpotLog(Exception ex) {
         // 에러 로그 생성
         StackTraceElement[] stackTrace = ex.getStackTrace();
         String className;
@@ -42,9 +39,13 @@ public class GlobalExceptionHandler {
             }
         }
         log.error("메시지 : {}", ex.getMessage());
+    }
 
 
-
+    // 원본
+    // value의 커스텀한 에러를 넣는다.
+    @ExceptionHandler(value = {Exception.class})
+    public ResponseEntity<Object> handleOtherExceptions(Exception ex, WebRequest request) {
         // 에러 응답 생성
         ErrorDetails errorDetails = new ErrorDetails();
         errorDetails.setCode("500");
@@ -59,6 +60,32 @@ public class GlobalExceptionHandler {
         errorResponse.setError(errorDetails);
 
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+
+    // 필드가 비어있는 예외를 처리하는 메소드
+    @ExceptionHandler(value = {FieldDataException.class})
+    public ResponseEntity<Object> FieldDataExceptions(FieldDataException ex, WebRequest request) {
+
+        errorSpotLog(ex);
+
+        // 에러 응답 생성
+        ErrorDetails errorDetails = new ErrorDetails();
+        errorDetails.setCode("400");
+        errorDetails.setMessage("field is Missing");
+
+        Map<String, String> detailsMap = new HashMap<>();
+
+
+        detailsMap.put("field", ex.getField());
+        detailsMap.put("reason", ex.getReason());
+
+        errorDetails.setDetails(detailsMap);
+
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setError(errorDetails);
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
 

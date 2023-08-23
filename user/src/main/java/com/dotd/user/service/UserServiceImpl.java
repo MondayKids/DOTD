@@ -3,15 +3,15 @@ package com.dotd.user.service;
 import com.dotd.user.dto.UserResponseDto;
 import com.dotd.user.dto.UserRegisterRequestDto;
 import com.dotd.user.entity.User;
+import com.dotd.user.exception.FieldDataException;
 import com.dotd.user.mapper.UserMapper;
 import com.dotd.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
-import java.util.Optional;
+import java.util.Random;
+
 
 /*
 
@@ -30,7 +30,6 @@ public class UserServiceImpl implements UserService {
     // repository
     private final UserRepository userRepository;
 
-
     // mapper
     private final UserMapper userMapper;
 
@@ -39,8 +38,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponseDto register(UserRegisterRequestDto dto) {
 
-        // log.info("{}", dto);
-        // log.info("user : {}", user);
+        // 예외 발생시 클래스를 만들어 예외 처리 실행
+        if (dto.getLoginId() == null || dto.getLoginId().isEmpty()) {
+            throw new FieldDataException("loginId", "loginId가 비어있습니다.");
+        }
+        else if(dto.getPassword() == null || dto.getPassword().isEmpty()) {
+            throw new FieldDataException("password", "password가 비어있습니다.");
+        }
+
         log.info("userService의 register 실행");
         User user = userMapper.userRegisterRequestDtoToUser(dto);
         User save = userRepository.save(user);
@@ -52,8 +57,8 @@ public class UserServiceImpl implements UserService {
     // 더미 회원들 등록
     @Override
     public void registDummy() {
-
-        for(int i = 11; i < 1001; i++) {
+        Random random = new Random();
+        for(int i = 1; i < 10001; i++) {
             User dummyUser = User.builder()
                     .loginId("dummyid" + i)
                     .password("password" + i)
@@ -64,6 +69,8 @@ public class UserServiceImpl implements UserService {
                     .phoneNumber("phone" + i)
                     .email("email" + i)
                     .build();
+
+            dummyUser.setUsedMoney(random.nextInt(10000) + 1);
             userRepository.save(dummyUser);
         }
     }

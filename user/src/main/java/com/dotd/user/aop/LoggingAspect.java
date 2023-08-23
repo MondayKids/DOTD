@@ -14,18 +14,18 @@ import org.springframework.stereotype.Component;
 public class LoggingAspect {
 
     // Around :  실행 전, 후
+    // controller 단에서 실행하고 응답까지 시간을 표시
     @Around("execution(* com.dotd.user.controller..*(..))")
     public Object logAroundControllerMethods(ProceedingJoinPoint joinPoint) throws Throwable {
         long startTime = System.currentTimeMillis();
-        log.info("Around 시작 : {}", joinPoint.getSignature().toShortString());
+        // log.info("Around 시작 : {}", joinPoint.getSignature().toShortString());
 
         Object result = joinPoint.proceed();  // 실제 메서드 실행
 
         long elapsedTime = System.currentTimeMillis() - startTime;
-        log.info("Around 끝 : {} / 걸린 시간 :  {} ms", joinPoint.getSignature().toShortString(), elapsedTime);
+        log.info("위치 : {} / 걸린 시간 :  {} ms", joinPoint.getSignature().toShortString(), elapsedTime);
         return result;
     }
-
 
 
 
