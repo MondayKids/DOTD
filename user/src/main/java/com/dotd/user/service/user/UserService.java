@@ -1,8 +1,8 @@
-package com.dotd.user.service;
+package com.dotd.user.service.user;
 
 
-import com.dotd.user.dto.UserResponseDto;
-import com.dotd.user.dto.UserRegisterRequestDto;
+import com.dotd.user.dto.user.UserResponseDto;
+import com.dotd.user.dto.user.UserRegisterRequestDto;
 
 public interface UserService {
 

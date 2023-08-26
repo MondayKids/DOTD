@@ -60,11 +60,12 @@ public class User {
 
 
     // @PrePersist 는 엔티티가 DB에 처음 저장되기 전에 호출되는 콜백 메소드
+    // 초기값 생성
     // 엔티티가 DB에 저장되기 전 필요한 작업을 수행할 수 있다.
     // id에 UUID 부여
     // 회원 가입 시간 부여
     @PrePersist
-    public void generateId() {
+    public void initializer() {
         this.id = UUID.randomUUID().toString();
         this.reward = 0;
         this.usedMoney = 0;

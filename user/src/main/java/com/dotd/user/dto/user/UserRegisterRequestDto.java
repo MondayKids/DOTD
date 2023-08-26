@@ -1,4 +1,4 @@
-package com.dotd.user.dto;
+package com.dotd.user.dto.user;
 
 
 import lombok.AllArgsConstructor;
@@ -6,33 +6,29 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import javax.persistence.Column;
 
 
 /*
+회원 가입 시 입력 받는 데이터
 
-회원 데이터를 반환하는 DTO
-
+로그인ID
+비밀번호
+비밀번호 체크
 성
 이름
 닉네임
 주소
-전화번호
+휴대전화
 이메일
-적립금
-사용 금액
-티어
-
  */
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserResponseDto {
+public class UserRegisterRequestDto {
 
-
-    private String id;
     private String loginId;
     private String password;
     private String lastName;
@@ -41,11 +37,5 @@ public class UserResponseDto {
     private String address;
     private String phoneNumber;
     private String email;
-    private Integer reward;
-    private Integer usedMoney;
-    private String tier;
-    private LocalDateTime createdAt;
-
-
 
 }

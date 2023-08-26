@@ -1,7 +1,7 @@
-package com.dotd.user.service;
+package com.dotd.user.service.user;
 
-import com.dotd.user.dto.UserResponseDto;
-import com.dotd.user.dto.UserRegisterRequestDto;
+import com.dotd.user.dto.user.UserResponseDto;
+import com.dotd.user.dto.user.UserRegisterRequestDto;
 import com.dotd.user.entity.User;
 import com.dotd.user.exception.FieldDataException;
 import com.dotd.user.mapper.UserMapper;

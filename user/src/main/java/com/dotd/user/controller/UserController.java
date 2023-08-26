@@ -1,9 +1,9 @@
 package com.dotd.user.controller;
 
 
-import com.dotd.user.dto.UserRegisterRequestDto;
-import com.dotd.user.dto.UserResponseDto;
-import com.dotd.user.service.UserService;
+import com.dotd.user.dto.user.UserRegisterRequestDto;
+import com.dotd.user.dto.user.UserResponseDto;
+import com.dotd.user.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
