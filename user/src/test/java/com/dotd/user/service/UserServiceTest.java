@@ -2,6 +2,7 @@ package com.dotd.user.service;
 
 
 import com.dotd.user.dto.user.UserLoginRequestDto;
+import com.dotd.user.dto.user.UserResponseDto;
 import com.dotd.user.entity.User;
 import com.dotd.user.repository.UserRepository;
 import com.dotd.user.service.user.UserService;
@@ -40,7 +41,7 @@ public class UserServiceTest {
         User save = userRepository.save(user);
 
         // when
-        User result = userService.login(dto);
+        UserResponseDto result = userService.login(dto);
 
         // then
         assertEquals(result.getLoginId(), userId);

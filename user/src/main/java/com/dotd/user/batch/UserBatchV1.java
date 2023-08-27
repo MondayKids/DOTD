@@ -14,46 +14,28 @@ import org.springframework.batch.item.database.JpaItemWriter;
 import org.springframework.batch.item.database.JpaPagingItemReader;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.task.TaskExecutor;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import javax.persistence.EntityManagerFactory;
 
-
-/*
-
-1. 성능 개선
-병렬 처리
-
- */
 
 @Configuration
 @EnableBatchProcessing
 @RequiredArgsConstructor
 @Slf4j
-public class UserTierBatchV2 {
+public class UserBatchV1 {
 
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
     private final EntityManagerFactory entityManagerFactory;
 
-
-    // 병렬 처리
-    @Bean
-    public TaskExecutor taskExecutor() {
-        ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
-        taskExecutor.setCorePoolSize(4); // 코어 스레드 개수 설정
-        taskExecutor.setMaxPoolSize(8); // 최대 스레드 개수 설정
-        taskExecutor.setQueueCapacity(10); // 큐 크기 설정
-        return taskExecutor;
-    }
-
     // 데이터 읽기
     @Bean
-    public JpaPagingItemReader<User> jpaPagingItemReaderV2() {
+    public JpaPagingItemReader<User> jpaPagingItemReaderV1() {
         JpaPagingItemReader<User> reader = new JpaPagingItemReader<>();
         reader.setEntityManagerFactory(entityManagerFactory);
+
         reader.setQueryString("select u from User u");
+
         reader.setPageSize(100);
         return reader;
     }
@@ -61,15 +43,15 @@ public class UserTierBatchV2 {
 
     // 유저 등급을 업데이트 하는 로직
     @Bean
-    public ItemProcessor<User, User> userProcessorV2() {
+    public ItemProcessor<User, User> userProcessorV1() {
         return user -> {
-            if(user.getUsedMoney() <= 1000) {
+            if(user.getUsedMoney() <= 100) {
                 user.setTier("Bronze");
             }
-            else if(user.getUsedMoney() <= 5000) {
+            else if(user.getUsedMoney() <= 500) {
                 user.setTier("Silver");
             }
-            else if(user.getUsedMoney() <= 10000) {
+            else if(user.getUsedMoney() <= 1000) {
                 user.setTier("Gold");
             }
 
@@ -80,7 +62,7 @@ public class UserTierBatchV2 {
 
     // 변경 사항을 DB에 저장하는 메소드
     @Bean
-    public JpaItemWriter<User> jpaItemWriterV2() {
+    public JpaItemWriter<User> jpaItemWriterV1() {
         JpaItemWriter<User> writer = new JpaItemWriter<>();
         writer.setEntityManagerFactory(entityManagerFactory);
         return writer;
@@ -88,20 +70,19 @@ public class UserTierBatchV2 {
 
 
     @Bean
-    public Step userTierStepV2() {
-        return stepBuilderFactory.get("userStepV2")
+    public Step userStepV1() {
+        return stepBuilderFactory.get("userStepV1")
                 .<User, User>chunk(100)
-                .reader(jpaPagingItemReaderV2())
-                .processor(userProcessorV2())
-                .writer(jpaItemWriterV2())
-                .taskExecutor(taskExecutor())
+                .reader(jpaPagingItemReaderV1())
+                .processor(userProcessorV1())
+                .writer(jpaItemWriterV1())
                 .build();
     }
 
     @Bean
-    public Job userTierJobV2(Step userTierStepV2) {
-        return jobBuilderFactory.get("userJobV2")
-                .start(userTierStepV2)
+    public Job userJobV1(Step userStepV1) {
+        return jobBuilderFactory.get("userJobV1")
+                .start(userStepV1)
                 .build();
     }
 }

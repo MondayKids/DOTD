@@ -1,4 +1,4 @@
-package com.dotd.user.dto.rewardlog;
+package com.dotd.user.dto.usedmoneylog;
 
 
 import lombok.AllArgsConstructor;
@@ -6,16 +6,16 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RewardLogRegisterRequestDto {
-
+public class UsedMoneyLogResponseDto {
+    private Long id;
     private String userId;
     private String description; // 설명
-    private String status; // 상태 : 적립 or 사용
-    private Integer reward; // 적립금
-
-
+    private Integer usedMoney; // 사용금액
+    private LocalDateTime createdAt;
 }

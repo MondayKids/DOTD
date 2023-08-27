@@ -1,5 +1,6 @@
 package com.dotd.user.service.user;
 
+import com.dotd.user.dto.rewardlog.RewardLogRegisterRequestDto;
 import com.dotd.user.dto.user.UserLoginRequestDto;
 import com.dotd.user.dto.user.UserResponseDto;
 import com.dotd.user.dto.user.UserRegisterRequestDto;
@@ -7,6 +8,7 @@ import com.dotd.user.entity.User;
 import com.dotd.user.exception.FieldDataException;
 import com.dotd.user.mapper.UserMapper;
 import com.dotd.user.repository.UserRepository;
+import com.dotd.user.service.rewardlog.RewardLogService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -35,6 +37,8 @@ public class UserServiceImpl implements UserService {
     // mapper
     private final UserMapper userMapper;
 
+    private final RewardLogService rewardLogService;
+
 
     // 회원 등록
     @Override
@@ -56,11 +60,11 @@ public class UserServiceImpl implements UserService {
         return result;
     }
 
-    // 더미 회원들 등록
+    // 더미 회원들 등록 + 유저 당 적립 내역 10개 등록
     @Override
     public void registDummy() {
         Random random = new Random();
-        for(int i = 1; i < 100000; i++) {
+        for(int i = 1; i < 10000; i++) {
             User dummyUser = User.builder()
                     .loginId("dummyid" + i)
                     .password("password" + i)
@@ -75,6 +79,19 @@ public class UserServiceImpl implements UserService {
             int number = random.nextInt(10001);
             dummyUser.setUsedMoney(number);
             userRepository.save(dummyUser);
+
+            // 더미 유저 한명단 10개의 적립금 생성
+            for(int j = 0; j < 10; j++) {
+                int rewardMoney = random.nextInt(2000);
+                RewardLogRegisterRequestDto dto = RewardLogRegisterRequestDto.builder()
+                        .userId(dummyUser.getId())
+                        .description("적립")
+                        .status("적립")
+                        .reward(rewardMoney)
+                        .build();
+                rewardLogService.register(dto);
+            }
+
         }
     }
 
