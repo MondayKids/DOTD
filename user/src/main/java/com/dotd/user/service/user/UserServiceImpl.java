@@ -1,5 +1,6 @@
 package com.dotd.user.service.user;
 
+import com.dotd.user.dto.user.UserLoginRequestDto;
 import com.dotd.user.dto.user.UserResponseDto;
 import com.dotd.user.dto.user.UserRegisterRequestDto;
 import com.dotd.user.entity.User;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Random;
 
 
@@ -58,7 +60,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void registDummy() {
         Random random = new Random();
-        for(int i = 1; i < 10001; i++) {
+        for(int i = 1; i < 100000; i++) {
             User dummyUser = User.builder()
                     .loginId("dummyid" + i)
                     .password("password" + i)
@@ -70,7 +72,8 @@ public class UserServiceImpl implements UserService {
                     .email("email" + i)
                     .build();
 
-            dummyUser.setUsedMoney(random.nextInt(10000) + 1);
+            int number = random.nextInt(10001);
+            dummyUser.setUsedMoney(number);
             userRepository.save(dummyUser);
         }
     }
@@ -82,6 +85,37 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(id).get();
         UserResponseDto result = userMapper.userToUserResponseDto(user);
         return result;
+    }
+
+    // 티어 별 회원 조회
+    @Override
+    public void findAllByTier(String tier) {
+        List<User> allByTier = userRepository.findByTier(tier);
+        log.info("{}의 전체 유저 수 : {}", tier, allByTier.size());
+
+    }
+
+    // 로그인 로직
+    @Override
+    public UserResponseDto login(UserLoginRequestDto dto) {
+        User user = userRepository.findByLoginId(dto.getLoginId());
+
+        // loginId가 틀렸을 경우
+        if(user == null) {
+            return null;
+        }
+
+        // password가 일치하면 로그인 진행
+        if (user.getPassword().equals(dto.getPassword())) {
+            UserResponseDto result = userMapper.userToUserResponseDto(user);
+            return result;
+        }
+        // password가 일차하지 않으면 null 반환
+        else {
+            return null;
+        }
+
+
     }
 
 

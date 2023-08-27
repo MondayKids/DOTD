@@ -1,8 +1,10 @@
 package com.dotd.user.controller;
 
 
+import com.dotd.user.dto.user.UserLoginRequestDto;
 import com.dotd.user.dto.user.UserRegisterRequestDto;
 import com.dotd.user.dto.user.UserResponseDto;
+import com.dotd.user.entity.User;
 import com.dotd.user.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,14 +42,18 @@ public class UserController {
         return ResponseEntity.ok(result);
     }
 
+    // tier 별 회원 조회
+    @GetMapping("find-all-by-tier")
+    public ResponseEntity<?> findAllByTier(@RequestParam(name = "tier") String tier) {
+        userService.findAllByTier(tier);
+        return ResponseEntity.ok("ok");
+    }
 
-
-
-
-
-
-
-
-
+    // 로그인
+    @PostMapping("login")
+    public ResponseEntity<?> login(@RequestBody UserLoginRequestDto dto) {
+        UserResponseDto result = userService.login(dto);
+        return ResponseEntity.ok(result);
+    }
 
 }

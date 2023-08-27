@@ -63,13 +63,13 @@ public class UserTierBatchV2 {
     @Bean
     public ItemProcessor<User, User> userProcessorV2() {
         return user -> {
-            if(user.getUsedMoney() <= 100) {
+            if(user.getUsedMoney() <= 1000) {
                 user.setTier("Bronze");
             }
-            else if(user.getUsedMoney() <= 500) {
+            else if(user.getUsedMoney() <= 5000) {
                 user.setTier("Silver");
             }
-            else if(user.getUsedMoney() <= 1000) {
+            else if(user.getUsedMoney() <= 10000) {
                 user.setTier("Gold");
             }
 
