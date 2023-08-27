@@ -45,4 +45,18 @@ public class OrderController {
 
         return ResponseEntity.ok(orderInfoResponseDTO);
     }
+
+    /**
+     * 주문 취소
+     */
+    @PostMapping("/cancel/{id}")
+    public ResponseEntity<OrderInfoResponseDTO> modifyOrderStatus(@PathVariable(value = "id", required = false) Long id) throws CustomException{
+        if (id == null) {
+            throw new CustomException(HttpStatus.BAD_REQUEST, "Param is missing");
+        }
+
+        OrderInfoResponseDTO orderInfoResponseDTO = orderService.modifyOrderById(id);
+
+        return ResponseEntity.ok(orderInfoResponseDTO);
+    }
 }

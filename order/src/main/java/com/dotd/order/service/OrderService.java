@@ -12,4 +12,6 @@ public interface OrderService {
     OrderCreateResponseDTO createOrder(OrderCreateRequestDTO orderCreateRequestDTO);
 
     OrderInfoResponseDTO findOrderById(long id) throws CustomException;
+
+    OrderInfoResponseDTO modifyOrderById(long id) throws CustomException;
 }
