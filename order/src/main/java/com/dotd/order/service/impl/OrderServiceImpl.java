@@ -70,6 +70,10 @@ public class OrderServiceImpl implements OrderService {
     public OrderInfoResponseDTO modifyOrderById(long id) throws CustomException {
         Order order = orderRepository.findById(id).orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "주문 정보 없음"));
 
+        if (order.getStatus().equals(OrderStatus.CANCELLED)) {
+            throw new CustomException(HttpStatus.CONFLICT, "이미 취소된 주문입니다");
+        }
+
         order.setStatus(OrderStatus.CANCELLED);
 
         OrderInfoResponseDTO orderInfoResponseDTO = OrderInfoResponseDTO.builder()
