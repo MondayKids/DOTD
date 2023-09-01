@@ -14,9 +14,6 @@ import javax.persistence.Persistence;
 public class UserApplication {
 
 	public static void main(String[] args) {
-		String jpaVersion = Persistence.class.getPackage().getImplementationVersion();
-		System.out.println("JPA Version: " + jpaVersion);
 		SpringApplication.run(UserApplication.class, args);
 	}
-
 }

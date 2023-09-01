@@ -40,7 +40,7 @@ public class UserBatchV2 {
 
     // 병렬 처리
     @Bean
-    public TaskExecutor taskExecutor() {
+    public TaskExecutor taskExecutorV2() {
         ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
         taskExecutor.setCorePoolSize(4); // 코어 스레드 개수 설정
         taskExecutor.setMaxPoolSize(8); // 최대 스레드 개수 설정
@@ -94,9 +94,12 @@ public class UserBatchV2 {
                 .reader(jpaPagingItemReaderV2())
                 .processor(userProcessorV2())
                 .writer(jpaItemWriterV2())
-                .taskExecutor(taskExecutor())
+                .taskExecutor(taskExecutorV2())
                 .build();
     }
+
+    //.taskExecutor(taskExecutor()) 설정을 사용하여 스텝 내의 아이템(chunk) 단위로 병렬 처리를 수행할 수 있습니다.
+
 
     @Bean
     public Job userJobV2(Step userStepV2) {
@@ -104,4 +107,6 @@ public class UserBatchV2 {
                 .start(userStepV2)
                 .build();
     }
+
+
 }

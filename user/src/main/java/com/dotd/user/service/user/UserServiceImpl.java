@@ -1,14 +1,17 @@
 package com.dotd.user.service.user;
 
 import com.dotd.user.dto.rewardlog.RewardLogRegisterRequestDto;
+import com.dotd.user.dto.usedmoneylog.UsedMoneyLogRegisterRequestDto;
 import com.dotd.user.dto.user.UserLoginRequestDto;
 import com.dotd.user.dto.user.UserResponseDto;
 import com.dotd.user.dto.user.UserRegisterRequestDto;
 import com.dotd.user.entity.User;
 import com.dotd.user.exception.FieldDataException;
 import com.dotd.user.mapper.UserMapper;
+import com.dotd.user.repository.UsedMoneyLogRepository;
 import com.dotd.user.repository.UserRepository;
 import com.dotd.user.service.rewardlog.RewardLogService;
+import com.dotd.user.service.usedmoneylog.UsedMoneyLogService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -37,7 +40,8 @@ public class UserServiceImpl implements UserService {
     // mapper
     private final UserMapper userMapper;
 
-    private final RewardLogService rewardLogService;
+
+    private final UsedMoneyLogService usedMoneyLogService;
 
 
     // 회원 등록
@@ -64,7 +68,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void registDummy() {
         Random random = new Random();
-        for(int i = 1; i < 10000; i++) {
+        for(int i = 1; i < 10001; i++) {
             User dummyUser = User.builder()
                     .loginId("dummyid" + i)
                     .password("password" + i)
@@ -76,20 +80,18 @@ public class UserServiceImpl implements UserService {
                     .email("email" + i)
                     .build();
 
-            int number = random.nextInt(10001);
-            dummyUser.setUsedMoney(number);
-            userRepository.save(dummyUser);
+            User user = userRepository.save(dummyUser);
 
             // 더미 유저 한명단 10개의 적립금 생성
             for(int j = 0; j < 10; j++) {
-                int rewardMoney = random.nextInt(2000);
-                RewardLogRegisterRequestDto dto = RewardLogRegisterRequestDto.builder()
-                        .userId(dummyUser.getId())
-                        .description("적립")
-                        .status("적립")
-                        .reward(rewardMoney)
+                int usedMoney = random.nextInt(2000);
+                UsedMoneyLogRegisterRequestDto usedMoneyLog = UsedMoneyLogRegisterRequestDto.builder()
+                        .userId(user.getId())
+                        .description("사용 내역")
+                        .usedMoney(usedMoney)
                         .build();
-                rewardLogService.register(dto);
+
+                usedMoneyLogService.register(usedMoneyLog);
             }
 
         }

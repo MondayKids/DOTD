@@ -24,6 +24,57 @@ public class BatchController {
     private final Job simpleJob;
     private final Job userJobV1;
     private final Job userJobV2;
+    private final Job updateUserUsedMoneyJobV3;
+    private final Job jobV4;
+    private final Job jobV5;
+
+
+    @PostMapping("/batchV5")
+    public ResponseEntity<String> batchV5() {
+        try {
+            JobParameters jobParameters = new JobParametersBuilder()
+                    .addLong("time", System.currentTimeMillis())
+                    .toJobParameters();
+            jobLauncher.run(jobV5, jobParameters);
+            return ResponseEntity.ok("Batch job has been started.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Failed to start the batch job.");
+        }
+    }
+
+
+
+    // batch version3
+    @PostMapping("/batchV4")
+    public ResponseEntity<String> batchV4() {
+        try {
+            JobParameters jobParameters = new JobParametersBuilder()
+                    .addLong("time", System.currentTimeMillis())
+                    .toJobParameters();
+            jobLauncher.run(jobV4, jobParameters);
+            return ResponseEntity.ok("Batch job has been started.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Failed to start the batch job.");
+        }
+    }
+
+    // batch version3
+    @PostMapping("/batchV3")
+    public ResponseEntity<String> batchV3() {
+        try {
+            JobParameters jobParameters = new JobParametersBuilder()
+                    .addLong("time", System.currentTimeMillis())
+                    .toJobParameters();
+            jobLauncher.run(updateUserUsedMoneyJobV3, jobParameters);
+            return ResponseEntity.ok("Batch job has been started.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Failed to start the batch job.");
+        }
+    }
+
 
     // user 등급 업데이트 메소드
     @PostMapping("/set-tier-v2")

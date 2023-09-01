@@ -7,6 +7,9 @@ import org.springframework.stereotype.Service;
 
 public interface CouponService {
 
+    // 더미 쿠폰 등록
+    public void registDummy();
+
     // 쿠폰 등록
     public CouponResponseDto register(CouponRegisterRequestDto dto);
 
