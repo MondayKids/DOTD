@@ -11,6 +11,9 @@ public interface ProductService {
     // 상품 조회
     public ProductResponseDto findById(Integer id);
 
+    // 상품 조회 Cache-Aside(Lazy Loading)
+    public ProductResponseDto findByIdCacheAside(Integer id);
+
 
 
 

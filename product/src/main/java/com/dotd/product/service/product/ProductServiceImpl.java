@@ -40,4 +40,10 @@ public class ProductServiceImpl implements ProductService{
         Product product = productRepository.findById(id).get();
         return productMapper.productToProductResponseDto(product);
     }
+
+    // 상품 상세 조회 Cache Aside 사용
+    @Override
+    public ProductResponseDto findByIdCacheAside(Integer id) {
+        return null;
+    }
 }

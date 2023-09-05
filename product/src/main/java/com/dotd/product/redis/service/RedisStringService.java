@@ -1,9 +1,8 @@
-package com.dotd.product.service.redis;
+package com.dotd.product.redis.service;
 
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +12,7 @@ import javax.transaction.Transactional;
 @Transactional
 @RequiredArgsConstructor
 @Slf4j
-public class RedisService {
+public class RedisStringService {
 
     private final StringRedisTemplate redisTemplate;
 
