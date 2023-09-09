@@ -12,13 +12,17 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductResponseDto {
+public class ProductResponseDto implements Serializable {
+
+    // 직렬화 버전
+    private static final long serialVersionUID = 1L;
 
 
     private Integer id;

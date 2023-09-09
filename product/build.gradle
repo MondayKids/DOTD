@@ -36,6 +36,8 @@ dependencies {
 	// 직렬화, 역직렬화
 	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
 
+	// cache
+	implementation 'org.springframework.boot:spring-boot-starter-cache'
 
 	// aop
 	implementation 'org.springframework.boot:spring-boot-starter-aop'

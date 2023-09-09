@@ -10,6 +10,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
@@ -18,7 +19,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @Table(name = "products")
-public class Product {
+public class Product  {
+
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

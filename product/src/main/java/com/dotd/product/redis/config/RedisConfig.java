@@ -19,8 +19,6 @@ public class RedisConfig {
 
     private final RedisConnectionFactory redisConnectionFactory;
 
-    // wlrfuf
-
     // product 객체를 Redis에 연결하기 위해 RedisTemplate
     @Bean
     public RedisTemplate<String, Product> productRedisTemplate() {
